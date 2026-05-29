@@ -4,6 +4,7 @@
 --  Place this file at: infrastructure/docker/init-db.sql
 -- =============================================================
 
+CREATE DATABASE mall_users;
 CREATE DATABASE mall_products;
 CREATE DATABASE mall_orders;
 CREATE DATABASE mall_payments;
@@ -15,5 +16,3 @@ CREATE DATABASE mall_reviews;
 CREATE DATABASE mall_discounts;
 CREATE DATABASE mall_wishlists;
 CREATE DATABASE mall_admin;
-CREATE DATABASE mall_search;
-CREATE DATABASE mall_media;
