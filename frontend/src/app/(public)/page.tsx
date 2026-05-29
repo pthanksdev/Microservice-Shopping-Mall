@@ -1,11 +1,10 @@
-import React from 'react';
+import ProductGrid from "@/components/products/ProductGrid";
 
 const HomePage = () => {
   return (
     <div className="container mx-auto px-4">
-      <h1 className="text-4xl font-bold text-center my-8">Welcome to the Shopping Mall</h1>
-      <p className="text-xl text-center mb-8">Discover a wide range of products from our vendors.</p>
-      {/* Add featured products or categories here */}
+      <h1 className="text-3xl font-bold my-6">Products</h1>
+      <ProductGrid />
     </div>
   );
 };
