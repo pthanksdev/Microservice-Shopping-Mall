@@ -1,13 +1,23 @@
-# Multi-stage build for Spring Boot
 FROM eclipse-temurin:21-jdk-alpine AS builder
 WORKDIR /app
+
+# Install Maven
+RUN apk add --no-cache maven
+
+# Copy parent pom
 COPY pom.xml .
-COPY src ./src
-RUN apk add --no-cache maven && mvn package -DskipTests
+
+# Copy common module and install it
+COPY common ./common
+RUN mvn -pl common install -DskipTests
+
+# Copy api-gateway module and package it
+COPY api-gateway ./api-gateway
+RUN mvn -pl api-gateway package -DskipTests
 
 FROM eclipse-temurin:21-jre-alpine AS production
 WORKDIR /app
-COPY --from=builder /app/target/*.jar app.jar
+COPY --from=builder /app/api-gateway/target/*.jar app.jar
 EXPOSE 8080
 ENTRYPOINT ["java", "-jar", "app.jar"]
 

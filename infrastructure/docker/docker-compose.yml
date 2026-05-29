@@ -170,8 +170,8 @@ services:
 
   api-gateway:
     build:
-      context: ../../backend/api-gateway
-      dockerfile: Dockerfile
+      context: ../../backend
+      dockerfile: api-gateway/Dockerfile
     container_name: mall-api-gateway
     restart: unless-stopped
     depends_on:
@@ -201,8 +201,8 @@ services:
 
   user-service:
     build:
-      context: ../../backend/user-service
-      dockerfile: Dockerfile
+      context: ../../backend
+      dockerfile: user-service/Dockerfile
     container_name: mall-user-service
     restart: unless-stopped
     depends_on:
@@ -230,8 +230,8 @@ services:
 
   product-service:
     build:
-      context: ../../backend/product-service
-      dockerfile: Dockerfile
+      context: ../../backend
+      dockerfile: product-service/Dockerfile
     container_name: mall-product-service
     restart: unless-stopped
     depends_on:
@@ -253,8 +253,8 @@ services:
 
   order-service:
     build:
-      context: ../../backend/order-service
-      dockerfile: Dockerfile
+      context: ../../backend
+      dockerfile: order-service/Dockerfile
     container_name: mall-order-service
     restart: unless-stopped
     depends_on:
@@ -278,8 +278,8 @@ services:
 
   payment-service:
     build:
-      context: ../../backend/payment-service
-      dockerfile: Dockerfile
+      context: ../../backend
+      dockerfile: payment-service/Dockerfile
     container_name: mall-payment-service
     restart: unless-stopped
     depends_on:
@@ -303,8 +303,8 @@ services:
 
   vendor-service:
     build:
-      context: ../../backend/vendor-service
-      dockerfile: Dockerfile
+      context: ../../backend
+      dockerfile: vendor-service/Dockerfile
     container_name: mall-vendor-service
     restart: unless-stopped
     depends_on:
@@ -326,8 +326,8 @@ services:
 
   inventory-service:
     build:
-      context: ../../backend/inventory-service
-      dockerfile: Dockerfile
+      context: ../../backend
+      dockerfile: inventory-service/Dockerfile
     container_name: mall-inventory-service
     restart: unless-stopped
     depends_on:
@@ -349,8 +349,8 @@ services:
 
   notification-service:
     build:
-      context: ../../backend/notification-service
-      dockerfile: Dockerfile
+      context: ../../backend
+      dockerfile: notification-service/Dockerfile
     container_name: mall-notification-service
     restart: unless-stopped
     depends_on:
@@ -377,8 +377,8 @@ services:
 
   shipping-service:
     build:
-      context: ../../backend/shipping-service
-      dockerfile: Dockerfile
+      context: ../../backend
+      dockerfile: shipping-service/Dockerfile
     container_name: mall-shipping-service
     restart: unless-stopped
     depends_on:
@@ -400,8 +400,8 @@ services:
 
   review-service:
     build:
-      context: ../../backend/review-service
-      dockerfile: Dockerfile
+      context: ../../backend
+      dockerfile: review-service/Dockerfile
     container_name: mall-review-service
     restart: unless-stopped
     depends_on:
@@ -423,8 +423,8 @@ services:
 
   discount-service:
     build:
-      context: ../../backend/discount-service
-      dockerfile: Dockerfile
+      context: ../../backend
+      dockerfile: discount-service/Dockerfile
     container_name: mall-discount-service
     restart: unless-stopped
     depends_on:
@@ -446,8 +446,8 @@ services:
 
   wishlist-service:
     build:
-      context: ../../backend/wishlist-service
-      dockerfile: Dockerfile
+      context: ../../backend
+      dockerfile: wishlist-service/Dockerfile
     container_name: mall-wishlist-service
     restart: unless-stopped
     depends_on:
@@ -469,8 +469,8 @@ services:
 
   admin-service:
     build:
-      context: ../../backend/admin-service
-      dockerfile: Dockerfile
+      context: ../../backend
+      dockerfile: admin-service/Dockerfile
     container_name: mall-admin-service
     restart: unless-stopped
     depends_on:
@@ -492,8 +492,8 @@ services:
 
   search-service:
     build:
-      context: ../../backend/search-service
-      dockerfile: Dockerfile
+      context: ../../backend
+      dockerfile: search-service/Dockerfile
     container_name: mall-search-service
     restart: unless-stopped
     depends_on:
@@ -515,8 +515,8 @@ services:
 
   media-service:
     build:
-      context: ../../backend/media-service
-      dockerfile: Dockerfile
+      context: ../../backend
+      dockerfile: media-service/Dockerfile
     container_name: mall-media-service
     restart: unless-stopped
     depends_on:
@@ -535,3 +535,18 @@ services:
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8094/actuator/health"]
       <<: *healthcheck-defaults
+
+  frontend:
+    build:
+      context: ../../frontend
+      dockerfile: Dockerfile
+    container_name: mall-frontend
+    restart: unless-stopped
+    depends_on:
+      - api-gateway
+    environment:
+      NEXT_PUBLIC_API_URL: http://localhost:8080/api/v1
+    ports:
+      - "3000:3000"
+    networks:
+      - mall-net
