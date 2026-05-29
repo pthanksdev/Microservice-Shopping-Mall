@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: discount-service
+  namespace: mall
+  labels:
+    app: discount-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: discount-service
+  template:
+    metadata:
+      labels:
+        app: discount-service
+    spec:
+      containers:
+        - name: discount-service
+          image: mall/discount-service:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8090
+          env:
+            - name: SPRING_DATASOURCE_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: db-config
+                  key: DISCOUNT_SERVICE_DB_URL
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: DISCOUNT_SERVICE_DB_PASSWORD
+          envFrom:
+            - configMapRef:
+                name: app-config
+            - secretRef:
+                name: jwt-secrets
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "150m"
+            limits:
+              memory: "512Mi"
+              cpu: "400m"
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8090
+            initialDelaySeconds: 60
+            periodSeconds: 15
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8090
+            initialDelaySeconds: 30
+            periodSeconds: 10
