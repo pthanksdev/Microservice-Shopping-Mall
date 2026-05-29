@@ -1,0 +1,131 @@
+version: "3.9"
+
+# =============================================================
+#  Shopping Mall — Dev Override (hot-reload + debug ports)
+#  Usage: docker-compose -f docker-compose.yml -f docker-compose.dev.yml up
+# =============================================================
+
+services:
+
+  api-gateway:
+    build:
+      context: ../../backend/api-gateway
+      target: dev
+    volumes:
+      - ../../backend/api-gateway/src:/app/src
+    environment:
+      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5080"
+    ports:
+      - "5080:5080"   # JDWP debug port
+
+  user-service:
+    volumes:
+      - ../../backend/user-service/src:/app/src
+    environment:
+      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5081"
+    ports:
+      - "5081:5081"
+
+  product-service:
+    volumes:
+      - ../../backend/product-service/src:/app/src
+    environment:
+      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5082"
+    ports:
+      - "5082:5082"
+
+  order-service:
+    volumes:
+      - ../../backend/order-service/src:/app/src
+    environment:
+      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5083"
+    ports:
+      - "5083:5083"
+
+  payment-service:
+    volumes:
+      - ../../backend/payment-service/src:/app/src
+    environment:
+      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5084"
+    ports:
+      - "5084:5084"
+
+  vendor-service:
+    volumes:
+      - ../../backend/vendor-service/src:/app/src
+    environment:
+      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5085"
+    ports:
+      - "5085:5085"
+
+  inventory-service:
+    volumes:
+      - ../../backend/inventory-service/src:/app/src
+    environment:
+      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5086"
+    ports:
+      - "5086:5086"
+
+  notification-service:
+    volumes:
+      - ../../backend/notification-service/src:/app/src
+    environment:
+      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5087"
+    ports:
+      - "5087:5087"
+
+  shipping-service:
+    volumes:
+      - ../../backend/shipping-service/src:/app/src
+    environment:
+      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5088"
+    ports:
+      - "5088:5088"
+
+  review-service:
+    volumes:
+      - ../../backend/review-service/src:/app/src
+    environment:
+      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5089"
+    ports:
+      - "5089:5089"
+
+  discount-service:
+    volumes:
+      - ../../backend/discount-service/src:/app/src
+    environment:
+      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5090"
+    ports:
+      - "5090:5090"
+
+  wishlist-service:
+    volumes:
+      - ../../backend/wishlist-service/src:/app/src
+    environment:
+      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5091"
+    ports:
+      - "5091:5091"
+
+  admin-service:
+    volumes:
+      - ../../backend/admin-service/src:/app/src
+    environment:
+      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5092"
+    ports:
+      - "5092:5092"
+
+  search-service:
+    volumes:
+      - ../../backend/search-service/src:/app/src
+    environment:
+      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5093"
+    ports:
+      - "5093:5093"
+
+  media-service:
+    volumes:
+      - ../../backend/media-service/src:/app/src
+    environment:
+      JAVA_TOOL_OPTIONS: "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5094"
+    ports:
+      - "5094:5094"
