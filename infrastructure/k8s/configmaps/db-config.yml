@@ -1,0 +1,25 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: db-config
+  namespace: mall
+data:
+  POSTGRES_HOST: "postgres-service"
+  POSTGRES_PORT: "5432"
+  POSTGRES_USER: "mall_admin"
+
+  # Per-service datasource URLs
+  USER_SERVICE_DB_URL: "jdbc:postgresql://postgres-service:5432/mall_users"
+  PRODUCT_SERVICE_DB_URL: "jdbc:postgresql://postgres-service:5432/mall_products"
+  ORDER_SERVICE_DB_URL: "jdbc:postgresql://postgres-service:5432/mall_orders"
+  PAYMENT_SERVICE_DB_URL: "jdbc:postgresql://postgres-service:5432/mall_payments"
+  VENDOR_SERVICE_DB_URL: "jdbc:postgresql://postgres-service:5432/mall_vendors"
+  INVENTORY_SERVICE_DB_URL: "jdbc:postgresql://postgres-service:5432/mall_inventory"
+  NOTIFICATION_SERVICE_DB_URL: "jdbc:postgresql://postgres-service:5432/mall_notifications"
+  SHIPPING_SERVICE_DB_URL: "jdbc:postgresql://postgres-service:5432/mall_shipping"
+  REVIEW_SERVICE_DB_URL: "jdbc:postgresql://postgres-service:5432/mall_reviews"
+  DISCOUNT_SERVICE_DB_URL: "jdbc:postgresql://postgres-service:5432/mall_discounts"
+  WISHLIST_SERVICE_DB_URL: "jdbc:postgresql://postgres-service:5432/mall_wishlists"
+  ADMIN_SERVICE_DB_URL: "jdbc:postgresql://postgres-service:5432/mall_admin"
+  SEARCH_SERVICE_DB_URL: "jdbc:postgresql://postgres-service:5432/mall_search"
+  MEDIA_SERVICE_DB_URL: "jdbc:postgresql://postgres-service:5432/mall_media"
