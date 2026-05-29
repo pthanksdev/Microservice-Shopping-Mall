@@ -1,7 +1,7 @@
-import { protectRoute } from "@/lib/protectRoute";
-import { Role } from "@/types/models";
 import UserInformation from "@/components/account/UserInformation";
 import UserOrders from "@/components/account/UserOrders";
+
+export const dynamic = 'force-dynamic';
 
 const CustomerAccountPage = () => {
   return (
@@ -21,4 +21,4 @@ const CustomerAccountPage = () => {
   );
 };
 
-export default protectRoute(CustomerAccountPage, [Role.CUSTOMER]);
+export default CustomerAccountPage;

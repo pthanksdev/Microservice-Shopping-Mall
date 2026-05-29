@@ -1,9 +1,9 @@
-import { protectRoute } from "@/lib/protectRoute";
-import { Role } from "@/types/models";
 import AdminDashboard from "@/components/admin/AdminDashboard";
+
+export const dynamic = 'force-dynamic';
 
 const AdminDashboardPage = () => {
   return <AdminDashboard />;
 };
 
-export default protectRoute(AdminDashboardPage, [Role.ADMIN]);
+export default AdminDashboardPage;

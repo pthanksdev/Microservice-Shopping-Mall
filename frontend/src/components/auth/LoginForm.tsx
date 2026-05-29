@@ -1,3 +1,4 @@
+"use client";
 import { useState } from 'react';
 import { useAuthStore } from '@/store/useAuthStore';
 import { api } from '@/lib/api';

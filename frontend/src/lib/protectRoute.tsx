@@ -1,7 +1,8 @@
+'use client';
 import { User, Role } from "@/types/models";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useRouter } from "next/navigation";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
 export function protectRoute<P extends object>(
   Component: React.ComponentType<P>,
@@ -10,19 +11,24 @@ export function protectRoute<P extends object>(
   return function ProtectedComponent(props: P) {
     const router = useRouter();
     const { user, accessToken } = useAuthStore();
+    const [isSSR, setIsSSR] = useState(true);
 
     useEffect(() => {
-      if (!accessToken) {
+        setIsSSR(false);
+    }, []);
+
+    useEffect(() => {
+      if (!accessToken && !isSSR) {
         router.push("/login");
         return;
       }
 
-      if (!user || !allowedRoles.includes(user.role)) {
+      if ((!user || !allowedRoles.includes(user.role)) && !isSSR) {
         router.push("/unauthorized");
       }
-    }, [user, accessToken, router]);
+    }, [user, accessToken, router, isSSR]);
 
-    if (!user || !allowedRoles.includes(user.role)) {
+    if (isSSR || !user || !allowedRoles.includes(user.role)) {
       return null; // Or a loading spinner
     }
 

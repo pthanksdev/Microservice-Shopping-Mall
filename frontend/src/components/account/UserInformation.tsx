@@ -1,4 +1,6 @@
-import React from 'react';
+"use client";
+
+import React, { useEffect } from 'react';
 import { useAuthStore } from '@/store/useAuthStore';
 import { api } from '@/lib/api';
 import { useQuery } from '@tanstack/react-query';
@@ -12,9 +14,14 @@ const UserInformation = () => {
   const { user, setUser } = useAuthStore();
   const { data, isLoading, error } = useQuery({ 
     queryKey: ['user'], 
-    queryFn: fetchUser, 
-    onSuccess: (data) => setUser(data) 
+    queryFn: fetchUser,
   });
+
+  useEffect(() => {
+    if (data) {
+      setUser(data);
+    }
+  }, [data, setUser]);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading user data</div>;

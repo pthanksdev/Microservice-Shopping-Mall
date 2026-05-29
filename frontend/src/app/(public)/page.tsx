@@ -1,5 +1,7 @@
 import ProductGrid from "@/components/products/ProductGrid";
 
+export const dynamic = 'force-dynamic';
+
 const HomePage = () => {
   return (
     <div className="container mx-auto px-4">
