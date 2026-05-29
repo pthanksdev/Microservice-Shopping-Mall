@@ -1,0 +1,78 @@
+# =============================================================
+#  Shopping Mall — .gitignore
+# =============================================================
+
+# ─── Environment ──────────────────────────────────────────────
+.env
+*.env.local
+*.env.production
+
+# ─── Maven ────────────────────────────────────────────────────
+target/
+*.class
+*.jar
+*.war
+*.ear
+*.zip
+*.tar.gz
+.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+# ─── IntelliJ IDEA ────────────────────────────────────────────
+.idea/
+*.iws
+*.iml
+*.ipr
+out/
+!**/src/main/**/out/
+!**/src/test/**/out/
+
+# ─── Eclipse ──────────────────────────────────────────────────
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+# ─── VS Code ──────────────────────────────────────────────────
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+
+# ─── Node / Frontend (saved for later) ───────────────────────
+node_modules/
+.next/
+dist/
+build/
+.nuxt/
+.cache/
+
+# ─── Docker ───────────────────────────────────────────────────
+docker-compose.override.yml
+
+# ─── Logs ─────────────────────────────────────────────────────
+*.log
+logs/
+spring.log
+
+# ─── OS ───────────────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V8
+.Trashes
+Thumbs.db
+ehthumbs.db
+
+# ─── Kubernetes Secrets (generated locally) ───────────────────
+infrastructure/k8s/secrets/*.local.yml
+
+# ─── Misc ─────────────────────────────────────────────────────
+*.swp
+*.swo
+*~
