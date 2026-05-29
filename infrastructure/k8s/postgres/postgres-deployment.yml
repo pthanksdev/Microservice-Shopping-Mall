@@ -1,0 +1,104 @@
+---
+# PostgreSQL Init ConfigMap
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: postgres-init-config
+  namespace: mall
+data:
+  init-db.sql: |
+    CREATE DATABASE mall_products;
+    CREATE DATABASE mall_orders;
+    CREATE DATABASE mall_payments;
+    CREATE DATABASE mall_vendors;
+    CREATE DATABASE mall_inventory;
+    CREATE DATABASE mall_notifications;
+    CREATE DATABASE mall_shipping;
+    CREATE DATABASE mall_reviews;
+    CREATE DATABASE mall_discounts;
+    CREATE DATABASE mall_wishlists;
+    CREATE DATABASE mall_admin;
+    CREATE DATABASE mall_search;
+    CREATE DATABASE mall_media;
+
+---
+# PostgreSQL Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: postgres
+  namespace: mall
+  labels:
+    app: postgres
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres
+  template:
+    metadata:
+      labels:
+        app: postgres
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16-alpine
+          ports:
+            - containerPort: 5432
+          env:
+            - name: POSTGRES_USER
+              valueFrom:
+                configMapKeyRef:
+                  name: db-config
+                  key: POSTGRES_USER
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-secrets
+                  key: POSTGRES_PASSWORD
+            - name: POSTGRES_DB
+              value: mall_users
+          volumeMounts:
+            - name: postgres-storage
+              mountPath: /var/lib/postgresql/data
+            - name: init-script
+              mountPath: /docker-entrypoint-initdb.d
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "250m"
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          livenessProbe:
+            exec:
+              command: ["pg_isready", "-U", "mall_admin"]
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            exec:
+              command: ["pg_isready", "-U", "mall_admin"]
+            initialDelaySeconds: 10
+            periodSeconds: 5
+      volumes:
+        - name: postgres-storage
+          persistentVolumeClaim:
+            claimName: postgres-pvc
+        - name: init-script
+          configMap:
+            name: postgres-init-config
+
+---
+# PostgreSQL ClusterIP Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-service
+  namespace: mall
+spec:
+  selector:
+    app: postgres
+  ports:
+    - port: 5432
+      targetPort: 5432
+  type: ClusterIP
