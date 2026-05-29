@@ -1,0 +1,64 @@
+server:
+  port: ${SERVER_PORT:8080}
+
+spring:
+  application:
+    name: api-gateway
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+  cloud:
+    gateway:
+      discovery:
+        locator:
+          enabled: false
+
+# JWT
+jwt:
+  secret: ${JWT_SECRET}
+
+# Rate limiting
+rate-limit:
+  requests-per-minute: 100
+
+# Downstream service URLs
+services:
+  user-url: ${USER_SERVICE_URL:http://localhost:8081}
+  product-url: ${PRODUCT_SERVICE_URL:http://localhost:8082}
+  order-url: ${ORDER_SERVICE_URL:http://localhost:8083}
+  payment-url: ${PAYMENT_SERVICE_URL:http://localhost:8084}
+  vendor-url: ${VENDOR_SERVICE_URL:http://localhost:8085}
+  inventory-url: ${INVENTORY_SERVICE_URL:http://localhost:8086}
+  notification-url: ${NOTIFICATION_SERVICE_URL:http://localhost:8087}
+  shipping-url: ${SHIPPING_SERVICE_URL:http://localhost:8088}
+  review-url: ${REVIEW_SERVICE_URL:http://localhost:8089}
+  discount-url: ${DISCOUNT_SERVICE_URL:http://localhost:8090}
+  wishlist-url: ${WISHLIST_SERVICE_URL:http://localhost:8091}
+  admin-url: ${ADMIN_SERVICE_URL:http://localhost:8092}
+  search-url: ${SEARCH_SERVICE_URL:http://localhost:8093}
+  media-url: ${MEDIA_SERVICE_URL:http://localhost:8094}
+
+# Actuator
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+  endpoint:
+    health:
+      show-details: always
+
+# Zipkin
+management:
+  tracing:
+    sampling:
+      probability: 1.0
+  zipkin:
+    tracing:
+      endpoint: ${ZIPKIN_BASE_URL:http://localhost:9411}/api/v2/spans
+
+logging:
+  level:
+    org.springframework.cloud.gateway: DEBUG
+    com.mall.gateway: DEBUG

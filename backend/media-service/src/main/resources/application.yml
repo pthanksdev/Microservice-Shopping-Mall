@@ -1,0 +1,30 @@
+server:
+  port: ${SERVER_PORT:8094}
+spring:
+  application:
+    name: media-service
+  servlet:
+    multipart:
+      max-file-size: 50MB
+      max-request-size: 50MB
+minio:
+  endpoint: ${MINIO_ENDPOINT:http://localhost:9000}
+  access-key: ${MINIO_ACCESS_KEY:minioadmin}
+  secret-key: ${MINIO_SECRET_KEY:minioadmin}
+  bucket:
+    products: products
+    vendors: vendors
+    users: users
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+logging:
+  level:
+    com.mall.media: DEBUG
