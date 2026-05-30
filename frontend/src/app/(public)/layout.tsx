@@ -1,6 +1,9 @@
 import type { Metadata } from "next";
 import './globals.css';
 import PublicLayoutClient from './PublicLayoutClient';
+import { Inter } from 'next/font/google';
+
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: "Shopping Mall",
@@ -14,7 +17,7 @@ export default function PublicLayout({
 }) {
   return (
     <html lang="en">
-      <body>
+      <body className={inter.className}>
         <PublicLayoutClient>
           {children}
         </PublicLayoutClient>
