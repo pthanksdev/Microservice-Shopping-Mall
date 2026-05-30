@@ -16,7 +16,7 @@ COPY . .
 # Build the specific service module and its dependencies
 # The '-am' flag ensures that required modules (like 'common') are also built
 # The '-DskipTests' flag skips running tests during the build
-RUN mvn package -pl :admin-service -am -DskipTests
+RUN mvn package -pl :auth-service -am -DskipTests
 
 # Production stage: Create the final lightweight image
 FROM eclipse-temurin:21-jre-alpine AS production
@@ -24,13 +24,13 @@ FROM eclipse-temurin:21-jre-alpine AS production
 WORKDIR /app
 
 # Argument to define the service name, used for finding the JAR file
-ARG SERVICE_NAME=admin-service
+ARG SERVICE_NAME=auth-service
 
 # Copy the built JAR from the builder stage
 COPY --from=builder /app/${SERVICE_NAME}/target/*.jar app.jar
 
 # Expose the port the service runs on
-EXPOSE 8092
+EXPOSE 8094
 
 # Entrypoint to run the Java application
 ENTRYPOINT ["java", "-jar", "app.jar"]
@@ -39,5 +39,5 @@ ENTRYPOINT ["java", "-jar", "app.jar"]
 # Dev stage: An extension of the production image for development
 FROM production AS dev
 
-# Enable remote debugging on port 5092
-ENV JAVA_TOOL_OPTIONS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5092"
+# Enable remote debugging on port 5094
+ENV JAVA_TOOL_OPTIONS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5094"
