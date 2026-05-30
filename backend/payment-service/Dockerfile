@@ -1,21 +1,43 @@
+# Builder stage: Build the application
 FROM eclipse-temurin:21-jdk-alpine AS builder
+
 WORKDIR /app
+
+# Install Maven for building
 RUN apk add --no-cache maven
 
-# Copy the parent pom and build common first
+# Copy the master POM and download dependencies to leverage Docker cache
 COPY pom.xml .
-COPY common ./common
-RUN mvn -pl common install -DskipTests -B
+RUN mvn dependency:go-offline -B
 
-# Copy payment-service and build it
-COPY payment-service ./payment-service
-RUN mvn -pl payment-service package -DskipTests -B
+# Copy the rest of the backend source code
+COPY . .
 
+# Build the specific service module and its dependencies
+# The '-am' flag ensures that required modules (like 'common') are also built
+# The '-DskipTests' flag skips running tests during the build
+RUN mvn package -pl :payment-service -am -DskipTests
+
+# Production stage: Create the final lightweight image
 FROM eclipse-temurin:21-jre-alpine AS production
+
 WORKDIR /app
-RUN addgroup -S mall && adduser -S mall -G mall
-COPY --from=builder /app/payment-service/target/*.jar app.jar
-RUN chown mall:mall app.jar
-USER mall
+
+# Argument to define the service name, used for finding the JAR file
+ARG SERVICE_NAME=payment-service
+
+# Copy the built JAR from the builder stage
+COPY --from=builder /app/${SERVICE_NAME}/target/*.jar app.jar
+
+# Expose the port the service runs on
 EXPOSE 8084
+
+# Entrypoint to run the Java application
 ENTRYPOINT ["java", "-jar", "app.jar"]
+
+
+# Dev stage: An extension of the production image for development
+FROM production AS dev
+
+# Enable remote debugging on port 5084
+ENV JAVA_TOOL_OPTIONS="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5084"
