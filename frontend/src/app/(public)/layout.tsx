@@ -1,13 +1,6 @@
-'use client';
-
 import type { Metadata } from "next";
-import { Inter } from 'next/font/google';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import './globals.css';
-
-const queryClient = new QueryClient();
-
-const inter = Inter({ subsets: ['latin'] });
+import PublicLayoutClient from './PublicLayoutClient';
 
 export const metadata: Metadata = {
   title: "Shopping Mall",
@@ -21,12 +14,10 @@ export default function PublicLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
-        <QueryClientProvider client={queryClient}>
-          <div>
-            {children}
-          </div>
-        </QueryClientProvider>
+      <body>
+        <PublicLayoutClient>
+          {children}
+        </PublicLayoutClient>
       </body>
     </html>
   );
