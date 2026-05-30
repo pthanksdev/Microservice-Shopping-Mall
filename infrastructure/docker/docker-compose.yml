@@ -1,5 +1,3 @@
-version: "3.9"
-
 # =============================================================
 #  Shopping Mall — Full Local Dev Stack
 #  Usage: docker-compose up --build
